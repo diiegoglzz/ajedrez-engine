@@ -1,0 +1,22 @@
+# Visual Studio / C++
+.vs/
+x64/
+Debug/
+Release/
+*.obj
+*.pdb
+*.exe
+*.ilk
+*.suo
+
+# Java
+*.class
+target/
+.idea/
+*.iml
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+env/

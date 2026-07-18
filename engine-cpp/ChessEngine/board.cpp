@@ -50,3 +50,31 @@ void printBoard(const Board& board) {
         std::cout << '\n';
     }
 }
+
+uint64_t knightAttacks(int square) {
+    uint64_t knight = 1ULL << square;
+    uint64_t attacks = 0ULL;
+
+    attacks |= (knight << 17) & NOT_A_FILE;
+    attacks |= (knight << 15) & NOT_H_FILE;
+    attacks |= (knight << 10) & NOT_AB_FILE;
+    attacks |= (knight << 6) & NOT_GH_FILE;
+
+    attacks |= (knight >> 17) & NOT_H_FILE;
+    attacks |= (knight >> 15) & NOT_A_FILE;
+    attacks |= (knight >> 10) & NOT_GH_FILE;
+    attacks |= (knight >> 6) & NOT_AB_FILE;
+
+    return attacks;
+}
+
+void printBitBoard(uint64_t bitboard) {
+    for (int rank = 7; rank >= 0; rank--) {
+        for (int file = 0; file < 8; file++) {
+            int square = rank * 8 + file;
+            std::cout << (getBit(bitboard, square) ? '1' : '.') << ' ';
+        }
+        std::cout << '\n';
+    }
+    std::cout << '\n'; // línea en blanco al final, para separar prints distintos
+}

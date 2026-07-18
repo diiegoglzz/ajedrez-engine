@@ -68,6 +68,22 @@ uint64_t knightAttacks(int square) {
     return attacks;
 }
 
+uint64_t kingAttacks(int square) {
+    uint64_t king = 1ULL << square;
+    uint64_t attacks = 0ULL;
+
+    attacks |= (king << 8);
+    attacks |= (king >> 8);
+    attacks |= (king << 1) & NOT_A_FILE;
+    attacks |= (king << 9) & NOT_A_FILE;
+    attacks |= (king >> 7) & NOT_A_FILE;
+    attacks |= (king >> 1) & NOT_H_FILE;
+    attacks |= (king >> 9) & NOT_H_FILE;
+    attacks |= (king << 7) & NOT_H_FILE;
+
+    return attacks;
+}
+
 void printBitBoard(uint64_t bitboard) {
     for (int rank = 7; rank >= 0; rank--) {
         for (int file = 0; file < 8; file++) {

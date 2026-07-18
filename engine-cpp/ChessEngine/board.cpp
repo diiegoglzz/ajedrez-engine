@@ -84,6 +84,47 @@ uint64_t kingAttacks(int square) {
     return attacks;
 }
 
+uint64_t rookAttacks(int square, uint64_t occupied) {
+    uint64_t attacks = 0ULL;
+    int currentSquare;
+
+    // Dirección: arriba (+8)
+    currentSquare = square + 8;
+    while (currentSquare <= 63) {
+        attacks |= (1ULL << currentSquare);
+        if (occupied & (1ULL << currentSquare)) break;  // chocamos con algo, paramos
+        currentSquare += 8;
+    }
+
+    // Direccion abajo (-8)
+    currentSquare = square - 8;
+    while(currentSquare >= 0) {
+        attacks |= (1ULL << currentSquare);
+        if (occupied & (1ULL << currentSquare)) break;
+        currentSquare -= 8;
+    }
+
+    int rank = square / 8;
+    
+    // Derecha (+1)
+    currentSquare = square + 1;
+    while (currentSquare <= 63 && currentSquare / 8 == rank) {
+        attacks |= (1ULL << currentSquare);
+        if (occupied & (1ULL << currentSquare)) break;
+        currentSquare += 1;
+    }
+
+    // Izquierda (-1)
+    currentSquare = square - 1;
+    while (currentSquare >= 0 && currentSquare / 8 == rank) {
+        attacks |= (1ULL << currentSquare);
+        if (occupied & (1ULL << currentSquare)) break;
+        currentSquare -=1;
+    }
+
+    return attacks;
+}
+
 void printBitBoard(uint64_t bitboard) {
     for (int rank = 7; rank >= 0; rank--) {
         for (int file = 0; file < 8; file++) {
@@ -93,4 +134,9 @@ void printBitBoard(uint64_t bitboard) {
         std::cout << '\n';
     }
     std::cout << '\n'; // línea en blanco al final, para separar prints distintos
+}
+
+uint64_t getAllPieces(const Board& board) {
+    return board.whitePawns | board.whiteKnights | board.whiteBishops | board.whiteRooks | board.whiteQueens | board.whiteKing |
+        board.blackPawns | board.blackKnights | board.blackBishops | board.blackRooks | board.blackQueens | board.blackKing;
 }

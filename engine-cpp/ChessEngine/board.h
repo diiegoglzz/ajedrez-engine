@@ -25,4 +25,6 @@ bool getBit(uint64_t bitboard, int square);
 void printBoard(const Board& board);
 uint64_t knightAttacks(int square);
 uint64_t kingAttacks(int square);
+uint64_t rookAttacks(int square, uint64_t occupied);
 void printBitBoard(uint64_t bitboard);
+uint64_t getAllPieces(const Board& board);

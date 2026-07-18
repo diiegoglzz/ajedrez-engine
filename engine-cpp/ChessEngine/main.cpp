@@ -19,5 +19,16 @@ int main()
 	std::cout << "\nAtaques del rey desde a1 (indice 0):\n";
 	printBitBoard(kingAttacks(0));
 
+	uint64_t occupied = getAllPieces(board);
+
+	std::cout << "\nOcupacion total del tablero:\n";
+	printBitBoard(occupied);
+
+	std::cout << "\nAtaques de la torre desde a1 (indice 0), tablero inicial:\n";
+	printBitBoard(rookAttacks(0, occupied));
+
+	std::cout << "\nAtaques de la torre desde d4 (indice 27), tablero inicial:\n";
+	printBitBoard(rookAttacks(27, occupied));
+
 	return 0;
 }

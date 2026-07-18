@@ -10,10 +10,10 @@ struct Board {
     uint64_t blackPawns, blackKnights, blackBishops, blackRooks, blackQueens, blackKing;
 
     bool whiteToMove;
-    // m·s adelante: derechos de enroque, casilla al paso, contador de medio-movimientos
+    // m√°s adelante: derechos de enroque, casilla al paso, contador de medio-movimientos
 };
 
-// Õndices de casillas: a1 = 0, b1 = 1, ..., h1 = 7, a2 = 8, ..., h8 = 63
+// √çndices de casillas: a1 = 0, b1 = 1, ..., h1 = 7, a2 = 8, ..., h8 = 63
 void initBoard(Board& board);
 bool getBit(uint64_t bitboard, int square);
 void printBoard(const Board& board);

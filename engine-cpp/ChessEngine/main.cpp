@@ -30,5 +30,11 @@ int main()
 	std::cout << "\nAtaques de la torre desde d4 (indice 27), tablero inicial:\n";
 	printBitBoard(rookAttacks(27, occupied));
 
+	std::cout << "\nAtaques del alfil desde c1 (indice 2), tablero inicial:\n";
+	printBitBoard(bishopAttacks(2, occupied));
+
+	std::cout << "\nAtaques del alfil desde d4 (indice 27), tablero inicial:\n";
+	printBitBoard(bishopAttacks(27, occupied));
+
 	return 0;
 }

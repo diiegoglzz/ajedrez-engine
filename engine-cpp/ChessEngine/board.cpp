@@ -125,6 +125,45 @@ uint64_t rookAttacks(int square, uint64_t occupied) {
     return attacks;
 }
 
+uint64_t bishopAttacks(int square, uint64_t occupied) {
+    uint64_t attacks = 0ULL;
+    int currentSquare;
+    
+    currentSquare = square + 9;
+    while (currentSquare <= 63) {
+        attacks |= (1ULL << currentSquare);
+        if (occupied & (1ULL << currentSquare)) break;
+        if (currentSquare % 8 == 7) break;
+        currentSquare += 9;
+    }
+
+    currentSquare = square - 9;
+    while (currentSquare >= 0) {
+        attacks |= (1ULL << currentSquare);
+        if (occupied & (1ULL << currentSquare)) break;
+        if (currentSquare % 8 == 0) break;
+        currentSquare -= 9;
+    }
+
+    currentSquare = square + 7;
+    while (currentSquare <= 63) {
+        attacks |= (1ULL << currentSquare);
+        if (occupied & (1ULL << currentSquare)) break;
+        if (currentSquare % 8 == 0) break;
+        currentSquare += 7;
+    }
+
+    currentSquare = square - 7;
+    while (currentSquare >= 0) {
+        attacks |= (1ULL << currentSquare);
+        if (occupied & (1ULL << currentSquare)) break;
+        if (currentSquare % 8 == 7) break;
+        currentSquare -= 7;
+    }
+
+    return attacks;
+}
+
 void printBitBoard(uint64_t bitboard) {
     for (int rank = 7; rank >= 0; rank--) {
         for (int file = 0; file < 8; file++) {

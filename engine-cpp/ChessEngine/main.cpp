@@ -36,5 +36,8 @@ int main()
 	std::cout << "\nAtaques del alfil desde d4 (indice 27), tablero inicial:\n";
 	printBitBoard(bishopAttacks(27, occupied));
 
+	std::cout << "\nAtaques de la dama desde d4 (indice 27), tablero inicial:\n";
+	printBitBoard(queenAttacks(27, occupied));
+
 	return 0;
 }

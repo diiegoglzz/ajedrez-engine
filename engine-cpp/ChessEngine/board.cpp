@@ -164,6 +164,10 @@ uint64_t bishopAttacks(int square, uint64_t occupied) {
     return attacks;
 }
 
+uint64_t queenAttacks(int square, uint64_t occupied) {
+    return rookAttacks(square, occupied) | bishopAttacks(square, occupied);
+}
+
 void printBitBoard(uint64_t bitboard) {
     for (int rank = 7; rank >= 0; rank--) {
         for (int file = 0; file < 8; file++) {

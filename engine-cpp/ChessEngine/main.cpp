@@ -45,5 +45,11 @@ int main()
 	std::cout << "\nCapturas del peon negro desde e5 (indice 36):\n";
 	printBitBoard(pawnAttacks(36, false));
 
+	std::cout << "\nMovimientos del peon blanco desde e2 (indice 12), tablero inicial:\n";
+	printBitBoard(pawnMoves(12, true, occupied));
+
+	std::cout << "\nMovimientos del peon negro desde e7 (indice 52), tablero inicial:\n";
+	printBitBoard(pawnMoves(52, false, occupied));
+
 	return 0;
 }

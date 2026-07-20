@@ -184,6 +184,38 @@ uint64_t pawnAttacks(int square, bool isWhite) {
     return attacks;
 }
 
+uint64_t pawnMoves(int square, bool isWhite, uint64_t occupied) {
+    uint64_t moves = 0ULL;
+
+    if (isWhite) {
+        int oneStep = square + 8;
+        if (!(occupied & (1ULL << oneStep))) {
+            moves |= (1ULL << oneStep);
+            // avance doble: ¿cómo comprobarías que square está en la fila 2?
+            if (square >= 8 && square <= 15) {
+                int twoStep = square + 16;
+                if (!(occupied & (1ULL << twoStep))) {
+                    moves |= (1ULL << twoStep);
+                }
+            }
+        }
+    }
+    else {
+        int oneStep = square - 8;
+        if (!(occupied & (1ULL << oneStep))) {
+            moves |= (1ULL << oneStep);
+            if (square >= 48 && square <= 55) {
+                int twoStep = square - 16;
+                if (!(occupied & (1ULL << twoStep))) {
+                    moves |= (1ULL << twoStep);
+                }
+            }
+        }
+    }
+
+    return moves;
+}
+
 void printBitBoard(uint64_t bitboard) {
     for (int rank = 7; rank >= 0; rank--) {
         for (int file = 0; file < 8; file++) {

@@ -168,6 +168,22 @@ uint64_t queenAttacks(int square, uint64_t occupied) {
     return rookAttacks(square, occupied) | bishopAttacks(square, occupied);
 }
 
+uint64_t pawnAttacks(int square, bool isWhite) {
+    uint64_t pawn = 1ULL << square;
+    uint64_t attacks = 0ULL;
+
+    if (isWhite) {
+        attacks |= (pawn << 9) & NOT_A_FILE;
+        attacks |= (pawn << 7) & NOT_H_FILE;
+    }
+    else {
+        attacks |= (pawn >> 7) & NOT_A_FILE;
+        attacks |= (pawn >> 9) & NOT_H_FILE;
+    }
+
+    return attacks;
+}
+
 void printBitBoard(uint64_t bitboard) {
     for (int rank = 7; rank >= 0; rank--) {
         for (int file = 0; file < 8; file++) {

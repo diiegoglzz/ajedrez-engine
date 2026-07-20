@@ -39,5 +39,11 @@ int main()
 	std::cout << "\nAtaques de la dama desde d4 (indice 27), tablero inicial:\n";
 	printBitBoard(queenAttacks(27, occupied));
 
+	std::cout << "\nCapturas del peon blanco desde e4 (indice 28):\n";
+	printBitBoard(pawnAttacks(28, true));
+
+	std::cout << "\nCapturas del peon negro desde e5 (indice 36):\n";
+	printBitBoard(pawnAttacks(36, false));
+
 	return 0;
 }

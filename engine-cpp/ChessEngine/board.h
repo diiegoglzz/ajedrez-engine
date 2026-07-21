@@ -39,3 +39,4 @@ uint64_t getAllWhites(const Board& board);
 uint64_t getAllBlacks(const Board& board);
 
 void generateKnightMoves(const Board& board, std::vector<Move>& moves);
+void generateKingMoves(const Board& board, std::vector<Move>& moves);

@@ -60,5 +60,13 @@ int main()
 		std::cout << "De " << m.from << " a " << m.to << (m.isCapture ? " (captura)" : "") << "\n";
 	}
 
+	std::vector<Move> kingMoves;
+	generateKingMoves(board, kingMoves);
+
+	std::cout << "\nMovimientos del rey generados (tablero inicial, turno blancas):\n";
+	for (const Move& m : kingMoves) {
+		std::cout << "De " << m.from << " a " << m.to << (m.isCapture ? " (captura)" : "") << "\n";
+	}
+
 	return 0;
 }

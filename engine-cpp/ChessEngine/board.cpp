@@ -231,3 +231,39 @@ uint64_t getAllPieces(const Board& board) {
     return board.whitePawns | board.whiteKnights | board.whiteBishops | board.whiteRooks | board.whiteQueens | board.whiteKing |
         board.blackPawns | board.blackKnights | board.blackBishops | board.blackRooks | board.blackQueens | board.blackKing;
 }
+
+uint64_t getAllWhites(const Board& board) {
+    return board.whitePawns | board.whiteKnights | board.whiteBishops | board.whiteRooks | board.whiteQueens | board.whiteKing;
+}
+
+uint64_t getAllBlacks(const Board& board) {
+    return board.blackPawns | board.blackKnights | board.blackBishops | board.blackRooks | board.blackQueens | board.blackKing;
+}
+
+void generateKnightMoves(const Board& board, std::vector<Move>& moves) {
+    uint64_t knights = board.whiteToMove ? board.whiteKnights : board.blackKnights;
+    uint64_t ownPieces = board.whiteToMove ? getAllWhites(board) : getAllBlacks(board);
+    uint64_t enemyPieces = board.whiteToMove ? getAllBlacks(board) : getAllWhites(board);
+
+    while (knights) {
+        unsigned long fromSquare;
+        _BitScanForward64(&fromSquare, knights);
+
+        uint64_t attacks = knightAttacks(fromSquare) & ~ownPieces;
+
+        while (attacks) {
+            unsigned long toSquare;
+            _BitScanForward64(&toSquare, attacks);
+
+            Move m;
+            m.from = fromSquare;
+            m.to = toSquare;
+            m.isCapture = getBit(enemyPieces, toSquare);
+            moves.push_back(m);
+
+            attacks &= (attacks - 1);
+        }
+
+        knights &= (knights - 1);
+    }
+}

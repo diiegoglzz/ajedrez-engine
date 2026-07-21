@@ -1,6 +1,7 @@
 #include <iostream>
 #include "board.h"
 
+
 int main()
 {
 	Board board;
@@ -50,6 +51,14 @@ int main()
 
 	std::cout << "\nMovimientos del peon negro desde e7 (indice 52), tablero inicial:\n";
 	printBitBoard(pawnMoves(52, false, occupied));
+
+	std::vector<Move> moves;
+	generateKnightMoves(board, moves);
+
+	std::cout << "\nMovimientos de caballo generados (tablero inicial, turno blancas):\n";
+	for (const Move& m : moves) {
+		std::cout << "De " << m.from << " a " << m.to << (m.isCapture ? " (captura)" : "") << "\n";
+	}
 
 	return 0;
 }

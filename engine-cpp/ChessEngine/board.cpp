@@ -295,3 +295,90 @@ void generateKingMoves(const Board& board, std::vector<Move>& moves) {
         king &= (king - 1);
     }
 }
+
+void generateRookMoves(const Board& board, std::vector<Move>& moves) {
+    uint64_t rooks = board.whiteToMove ? board.whiteRooks : board.blackRooks;
+    uint64_t ownPieces = board.whiteToMove ? getAllWhites(board) : getAllBlacks(board);
+    uint64_t enemyPieces = board.whiteToMove ? getAllBlacks(board) : getAllWhites(board);
+    uint64_t occupied = getAllPieces(board);
+
+    while (rooks) {
+        unsigned long fromSquare;
+        _BitScanForward64(&fromSquare, rooks);
+
+        uint64_t attacks = rookAttacks(fromSquare, occupied) & ~ownPieces;
+
+        while (attacks) {
+            unsigned long toSquare;
+            _BitScanForward64(&toSquare, attacks);
+
+            Move m;
+            m.from = fromSquare;
+            m.to = toSquare;
+            m.isCapture = getBit(enemyPieces, toSquare);
+            moves.push_back(m);
+
+            attacks &= (attacks - 1);
+        }
+
+        rooks &= (rooks - 1);
+    }
+}
+
+void generateBishopMoves(const Board& board, std::vector<Move>& moves) {
+    uint64_t bishops = board.whiteToMove ? board.whiteBishops : board.blackBishops;
+    uint64_t ownPieces = board.whiteToMove ? getAllWhites(board) : getAllBlacks(board);
+    uint64_t enemyPieces = board.whiteToMove ? getAllBlacks(board) : getAllWhites(board);
+    uint64_t occupied = getAllPieces(board);
+
+    while (bishops) {
+        unsigned long fromSquare;
+        _BitScanForward64(&fromSquare, bishops);
+
+        uint64_t attacks = bishopAttacks(fromSquare, occupied) & ~ownPieces;
+
+        while (attacks) {
+            unsigned long toSquare;
+            _BitScanForward64(&toSquare, attacks);
+
+            Move m;
+            m.from = fromSquare;
+            m.to = toSquare;
+            m.isCapture = getBit(enemyPieces, toSquare);
+            moves.push_back(m);
+
+            attacks &= (attacks - 1);
+        }
+
+        bishops &= (bishops - 1);
+    }
+}
+
+void generateQueenMoves(const Board& board, std::vector<Move>& moves) {
+    uint64_t queens = board.whiteToMove ? board.whiteQueens : board.blackQueens;
+    uint64_t ownPieces = board.whiteToMove ? getAllWhites(board) : getAllBlacks(board);
+    uint64_t enemyPieces = board.whiteToMove ? getAllBlacks(board) : getAllWhites(board);
+    uint64_t occupied = getAllPieces(board);
+
+    while (queens) {
+        unsigned long fromSquare;
+        _BitScanForward64(&fromSquare, queens);
+
+        uint64_t attacks = queenAttacks(fromSquare, occupied) & ~ownPieces;
+
+        while (attacks) {
+            unsigned long toSquare;
+            _BitScanForward64(&toSquare, attacks);
+
+            Move m;
+            m.from = fromSquare;
+            m.to = toSquare;
+            m.isCapture = getBit(enemyPieces, toSquare);
+            moves.push_back(m);
+
+            attacks &= (attacks - 1);
+        }
+
+        queens &= (queens - 1);
+    }
+}

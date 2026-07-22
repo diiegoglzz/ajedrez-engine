@@ -68,5 +68,14 @@ int main()
 		std::cout << "De " << m.from << " a " << m.to << (m.isCapture ? " (captura)" : "") << "\n";
 	}
 
+	std::vector<Move> rookMoves, bishopMoves, queenMoves;
+	generateRookMoves(board, rookMoves);
+	generateBishopMoves(board, bishopMoves);
+	generateQueenMoves(board, queenMoves);
+
+	std::cout << "\nMovimientos de torre generados: " << rookMoves.size() << "\n";
+	std::cout << "\nMovimientos de alfil generados: " << bishopMoves.size() << "\n";
+	std::cout << "\nMovimientos de dama generados: " << queenMoves.size() << "\n";
+
 	return 0;
 }

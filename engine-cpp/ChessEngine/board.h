@@ -40,3 +40,6 @@ uint64_t getAllBlacks(const Board& board);
 
 void generateKnightMoves(const Board& board, std::vector<Move>& moves);
 void generateKingMoves(const Board& board, std::vector<Move>& moves);
+void generateRookMoves(const Board& board, std::vector<Move>& moves);
+void generateBishopMoves(const Board& board, std::vector<Move>& moves);
+void generateQueenMoves(const Board& board, std::vector<Move>& moves);

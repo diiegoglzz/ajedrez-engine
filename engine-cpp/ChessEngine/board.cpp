@@ -460,3 +460,12 @@ bool isSquareAttacked(const Board& board, int square, bool byWhite) {
 
     return false;
 }
+
+bool isKingInCheck(const Board& board, bool whiteKing) {
+    uint64_t king = whiteKing ? board.whiteKing : board.blackKing;
+
+    unsigned long kingSquare;
+    _BitScanForward64(&kingSquare, king);
+
+    return isSquareAttacked(board, kingSquare, !whiteKing);
+}

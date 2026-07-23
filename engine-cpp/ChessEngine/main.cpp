@@ -92,5 +92,8 @@ int main()
 	std::cout << "¿e5 esta atacada por blancas? " << (isSquareAttacked(board, 36, true) ? "Si" : "No") << "\n";
 	std::cout << "¿e5 esta atacada por negras? " << (isSquareAttacked(board, 36, false) ? "Si" : "No") << "\n";
 
+	std::cout << "\n¿Rey blanco en jaque? " << (isKingInCheck(board, true) ? "Si" : "No") << "\n";
+	std::cout << "¿Rey negro en jaque? " << (isKingInCheck(board, false) ? "Si" : "No") << "\n";
+
 	return 0;
 }

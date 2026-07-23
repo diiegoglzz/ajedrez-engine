@@ -421,3 +421,16 @@ void generatePawnMoves(const Board& board, std::vector<Move>& moves) {
         pawns &= (pawns - 1);
     }
 }
+
+std::vector<Move> generateAllMoves(const Board& board) {
+    std::vector<Move> moves;
+
+    generateKnightMoves(board, moves);
+    generateKingMoves(board, moves);
+    generateRookMoves(board, moves);
+    generateBishopMoves(board, moves);
+    generateQueenMoves(board, moves);
+    generatePawnMoves(board, moves);
+
+    return moves;
+}

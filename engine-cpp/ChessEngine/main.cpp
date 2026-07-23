@@ -82,5 +82,8 @@ int main()
 
 	std::cout << "\nMovimientos de peon generados: " << pawnMovesList.size() << "\n";
 
+	std::vector<Move> allMoves = generateAllMoves(board);
+	std::cout << "\nTotal de movimientos generados (tablero inicial, turno blancas): " << allMoves.size() << "\n";
+
 	return 0;
 }

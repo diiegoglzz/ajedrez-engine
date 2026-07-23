@@ -44,3 +44,5 @@ void generateRookMoves(const Board& board, std::vector<Move>& moves);
 void generateBishopMoves(const Board& board, std::vector<Move>& moves);
 void generateQueenMoves(const Board& board, std::vector<Move>& moves);
 void generatePawnMoves(const Board& board, std::vector<Move>& moves);
+
+std::vector<Move> generateAllMoves(const Board& board);

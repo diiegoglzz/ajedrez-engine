@@ -46,3 +46,5 @@ void generateQueenMoves(const Board& board, std::vector<Move>& moves);
 void generatePawnMoves(const Board& board, std::vector<Move>& moves);
 
 std::vector<Move> generateAllMoves(const Board& board);
+
+bool isSquareAttacked(const Board& board, int square, bool byWhite);

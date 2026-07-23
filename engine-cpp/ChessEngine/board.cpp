@@ -434,3 +434,29 @@ std::vector<Move> generateAllMoves(const Board& board) {
 
     return moves;
 }
+
+bool isSquareAttacked(const Board& board, int square, bool byWhite) {
+    uint64_t occupied = getAllPieces(board);
+
+    // Caballo
+    uint64_t knights = byWhite ? board.whiteKnights : board.blackKnights;
+    if (knightAttacks(square) & knights) return true;
+
+    // Rey
+    uint64_t king = byWhite ? board.whiteKing : board.blackKing;
+    if (kingAttacks(square) & king) return true;
+
+    // Peón (color invertido, como acabas de deducir)
+    uint64_t pawns = byWhite ? board.whitePawns : board.blackPawns;
+    if (pawnAttacks(square, !byWhite) & pawns) return true;
+
+    // Torre / Dama (movimiento recto)
+    uint64_t rooksQueens = byWhite ? (board.whiteRooks | board.whiteQueens) : (board.blackRooks | board.blackQueens);
+    if (rookAttacks(square, occupied) & rooksQueens) return true;
+
+    // Alfil / Dama (movimiento diagonal)
+    uint64_t bishopsQueens = byWhite ? (board.whiteBishops | board.whiteQueens) : (board.blackBishops | board.blackQueens);
+    if (bishopAttacks(square, occupied) & bishopsQueens) return true;
+
+    return false;
+}

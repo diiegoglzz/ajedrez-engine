@@ -1,9 +1,12 @@
 #include <iostream>
 #include "board.h"
+#include <windows.h>;
 
 
 int main()
 {
+	SetConsoleOutputCP(CP_UTF8);
+	
 	Board board;
 	initBoard(board);
 	printBoard(board);
@@ -84,6 +87,10 @@ int main()
 
 	std::vector<Move> allMoves = generateAllMoves(board);
 	std::cout << "\nTotal de movimientos generados (tablero inicial, turno blancas): " << allMoves.size() << "\n";
+
+	std::cout << "\n¿e4 esta atacada por blancas? " << (isSquareAttacked(board, 28, true) ? "Si" : "No") << "\n";
+	std::cout << "¿e5 esta atacada por blancas? " << (isSquareAttacked(board, 36, true) ? "Si" : "No") << "\n";
+	std::cout << "¿e5 esta atacada por negras? " << (isSquareAttacked(board, 36, false) ? "Si" : "No") << "\n";
 
 	return 0;
 }

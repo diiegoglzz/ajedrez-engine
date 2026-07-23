@@ -10,7 +10,7 @@ Motor de ajedrez multi-lenguaje, en desarrollo.
 ## Estado actual
 - ✅ Representación del tablero con bitboards
 - ✅ Función de impresión del tablero
-- 🔲 Generación de movimientos
+- ✅ Generación de movimientos
 - 🔲 Búsqueda (minimax + alpha-beta)
 - 🔲 Protocolo UCI
 - 🔲 GUI en Java

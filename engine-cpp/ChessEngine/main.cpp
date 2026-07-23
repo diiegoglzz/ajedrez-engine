@@ -77,5 +77,10 @@ int main()
 	std::cout << "\nMovimientos de alfil generados: " << bishopMoves.size() << "\n";
 	std::cout << "\nMovimientos de dama generados: " << queenMoves.size() << "\n";
 
+	std::vector<Move> pawnMovesList;
+	generatePawnMoves(board, pawnMovesList);
+
+	std::cout << "\nMovimientos de peon generados: " << pawnMovesList.size() << "\n";
+
 	return 0;
 }

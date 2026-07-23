@@ -382,3 +382,42 @@ void generateQueenMoves(const Board& board, std::vector<Move>& moves) {
         queens &= (queens - 1);
     }
 }
+
+void generatePawnMoves(const Board& board, std::vector<Move>& moves) {
+    uint64_t pawns = board.whiteToMove ? board.whitePawns : board.blackPawns;
+    uint64_t enemyPieces = board.whiteToMove ? getAllBlacks(board) : getAllWhites(board);
+    uint64_t occupied = getAllPieces(board);
+
+    while (pawns) {
+        unsigned long fromSquare;
+        _BitScanForward64(&fromSquare, pawns);
+
+        // Avances (simple + doble)
+        uint64_t advances = pawnMoves(fromSquare, board.whiteToMove, occupied);
+        while (advances) {
+            unsigned long toSquare;
+            _BitScanForward64(&toSquare, advances);
+            Move m;
+            m.from = fromSquare;
+            m.to = toSquare;
+            m.isCapture = false; // un avance nunca es captura
+            moves.push_back(m);
+            advances &= (advances - 1);
+        }
+
+        // Capturas diagonales
+        uint64_t captures = pawnAttacks(fromSquare, board.whiteToMove) & enemyPieces;
+        while (captures) {
+            unsigned long toSquare;
+            _BitScanForward64(&toSquare, captures);
+            Move m;
+            m.from = fromSquare;
+            m.to = toSquare;
+            m.isCapture = true; // aquí ya sabemos que siempre es captura
+            moves.push_back(m);
+            captures &= (captures - 1);
+        }
+
+        pawns &= (pawns - 1);
+    }
+}

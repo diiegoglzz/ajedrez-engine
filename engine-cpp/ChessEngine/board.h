@@ -14,10 +14,16 @@ struct Board {
     bool whiteToMove;
 };
 
+enum PieceType {
+    PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING
+};
+
+
 struct Move {
     int from;
     int to;
     bool isCapture;
+    PieceType piece;
 };
 
 // Índices de casillas: a1 = 0, b1 = 1, ..., h1 = 7, a2 = 8, ..., h8 = 63

@@ -259,6 +259,7 @@ void generateKnightMoves(const Board& board, std::vector<Move>& moves) {
             m.from = fromSquare;
             m.to = toSquare;
             m.isCapture = getBit(enemyPieces, toSquare);
+            m.piece = KNIGHT;
             moves.push_back(m);
 
             attacks &= (attacks - 1);
@@ -287,6 +288,7 @@ void generateKingMoves(const Board& board, std::vector<Move>& moves) {
             m.from = fromSquare;
             m.to = toSquare;
             m.isCapture = getBit(enemyPieces, toSquare);
+            m.piece = KING;
             moves.push_back(m);
 
             attacks &= (attacks - 1);
@@ -316,6 +318,7 @@ void generateRookMoves(const Board& board, std::vector<Move>& moves) {
             m.from = fromSquare;
             m.to = toSquare;
             m.isCapture = getBit(enemyPieces, toSquare);
+            m.piece = ROOK;
             moves.push_back(m);
 
             attacks &= (attacks - 1);
@@ -345,6 +348,7 @@ void generateBishopMoves(const Board& board, std::vector<Move>& moves) {
             m.from = fromSquare;
             m.to = toSquare;
             m.isCapture = getBit(enemyPieces, toSquare);
+            m.piece = BISHOP;
             moves.push_back(m);
 
             attacks &= (attacks - 1);
@@ -374,6 +378,7 @@ void generateQueenMoves(const Board& board, std::vector<Move>& moves) {
             m.from = fromSquare;
             m.to = toSquare;
             m.isCapture = getBit(enemyPieces, toSquare);
+            m.piece = QUEEN;
             moves.push_back(m);
 
             attacks &= (attacks - 1);
@@ -401,6 +406,7 @@ void generatePawnMoves(const Board& board, std::vector<Move>& moves) {
             m.from = fromSquare;
             m.to = toSquare;
             m.isCapture = false; // un avance nunca es captura
+            m.piece = PAWN;
             moves.push_back(m);
             advances &= (advances - 1);
         }
@@ -414,6 +420,7 @@ void generatePawnMoves(const Board& board, std::vector<Move>& moves) {
             m.from = fromSquare;
             m.to = toSquare;
             m.isCapture = true; // aquí ya sabemos que siempre es captura
+            m.piece = PAWN;
             moves.push_back(m);
             captures &= (captures - 1);
         }

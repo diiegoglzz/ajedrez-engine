@@ -60,3 +60,5 @@ bool isKingInCheck(const Board& board, bool whiteKing);
 Board makeMove(const Board& board, const Move& m);
 
 std::vector<Move> generateLegalMoves(const Board& board);
+
+uint64_t perft(const Board& board, int depth);

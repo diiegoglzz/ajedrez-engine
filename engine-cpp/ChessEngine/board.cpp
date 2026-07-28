@@ -551,3 +551,29 @@ std::vector<Move> generateLegalMoves(const Board& board) {
 
     return legal;
 }
+
+// Tests para probar casos triviales
+uint64_t perft(const Board& board, int depth) {
+    if (depth == 0) {
+        return 1;
+    }
+
+    std::vector<Move> legalMoves = generateLegalMoves(board);
+    uint64_t count = 0;
+
+    for (const Move& m : legalMoves) {
+        
+         Board afterMove = makeMove(board, m);
+         count += perft(afterMove, depth - 1);
+        
+        /* Board afterMove = makeMove(board, m); — igual que ya hiciste antes en main.cpp para probar el 
+        peón e2-e4, aquí aplicas el movimiento m sobre el tablero actual, y guardas el resultado en afterMove.
+        - count += perft(afterMove, depth - 1); — aquí está la parte nueva: en vez de sumar 1, le preguntas a la
+        propia función perft cuántas posiciones hay desde esta nueva posición, pero con un nivel menos de profundidad. 
+        Esa llamada, a su vez, hará lo mismo (generará movimientos legales de afterMove, y por cada uno llamará
+        de nuevo a perft con depth - 2), hasta que depth llegue a 0 — momento en el que el caso base (return 1;) 
+        para la recursión y empieza a "sumar hacia atrás" todos los resultados */
+    }
+
+    return count;
+}

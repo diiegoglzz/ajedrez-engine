@@ -109,5 +109,9 @@ int main()
 	std::vector<Move> legalMoves = generateLegalMoves(board);
 	std::cout << "\nTotal de movimientos LEGALES (tablero inicial, turno blancas): " << legalMoves.size() << "\n";
 
+	std::cout << "\nPerft(1): " << perft(board, 1) << "\n";
+	std::cout << "Perft(2): " << perft(board, 2) << "\n";
+	std::cout << "Perft(3): " << perft(board, 3) << "\n";
+
 	return 0;
 }

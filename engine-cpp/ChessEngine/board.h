@@ -56,3 +56,5 @@ std::vector<Move> generateAllMoves(const Board& board);
 bool isSquareAttacked(const Board& board, int square, bool byWhite);
 
 bool isKingInCheck(const Board& board, bool whiteKing);
+
+Board makeMove(const Board& board, const Move& m);

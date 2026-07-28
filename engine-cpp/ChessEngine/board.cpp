@@ -476,3 +476,64 @@ bool isKingInCheck(const Board& board, bool whiteKing) {
 
     return isSquareAttacked(board, kingSquare, !whiteKing);
 }
+
+Board makeMove(const Board& board, const Move& m) {
+    Board newBoard = board;
+
+    uint64_t fromBit = 1ULL << m.from;
+    uint64_t toBit = 1ULL << m.to;
+
+    // Mover la pieza en su bitboard correspondiente
+    switch (m.piece) {
+    case PAWN:
+        if (newBoard.whiteToMove) { newBoard.whitePawns &= ~fromBit; newBoard.whitePawns |= toBit; }
+        else { newBoard.blackPawns &= ~fromBit; newBoard.blackPawns |= toBit; }
+        break;
+    case KNIGHT:
+        if (newBoard.whiteToMove) { newBoard.whiteKnights &= ~fromBit; newBoard.whiteKnights |= toBit; }
+        else { newBoard.blackKnights &= ~fromBit; newBoard.blackKnights |= toBit; }
+        break;
+    case BISHOP:
+        if (newBoard.whiteToMove) { newBoard.whiteBishops &= ~fromBit; newBoard.whiteBishops |= toBit; }
+        else { newBoard.blackBishops &= ~fromBit; newBoard.blackBishops |= toBit; }
+        break;
+    case ROOK:
+        if (newBoard.whiteToMove) { newBoard.whiteRooks &= ~fromBit; newBoard.whiteRooks |= toBit; }
+        else { newBoard.blackRooks &= ~fromBit; newBoard.blackRooks |= toBit; }
+        break;
+    case QUEEN:
+        if (newBoard.whiteToMove) { newBoard.whiteQueens &= ~fromBit; newBoard.whiteQueens |= toBit; }
+        else { newBoard.blackQueens &= ~fromBit; newBoard.blackQueens |= toBit; }
+        break;
+    case KING:
+        if (newBoard.whiteToMove) { newBoard.whiteKing &= ~fromBit; newBoard.whiteKing |= toBit; }
+        else { newBoard.blackKing &= ~fromBit; newBoard.blackKing |= toBit; }
+        break;
+    }
+
+    // Manejar captura: quitar la pieza rival de la casilla 'to'
+    if (m.isCapture) {
+        if (newBoard.whiteToMove) {
+            // el rival es negro, apaga el bit 'to' en los 6 bitboards negros
+            newBoard.blackPawns &= ~toBit;
+            newBoard.blackKnights &= ~toBit;
+            newBoard.blackBishops &= ~toBit;
+            newBoard.blackRooks &= ~toBit;
+            newBoard.blackQueens &= ~toBit;
+            newBoard.blackKing &= ~toBit;
+        }
+        else {
+            newBoard.whitePawns &= ~toBit;
+            newBoard.whiteKnights &= ~toBit;
+            newBoard.whiteBishops &= ~toBit;
+            newBoard.whiteRooks &= ~toBit;
+            newBoard.whiteQueens &= ~toBit;
+            newBoard.whiteKing &= ~toBit;
+        }
+    }
+
+    newBoard.whiteToMove = !newBoard.whiteToMove;
+
+
+    return newBoard;
+}

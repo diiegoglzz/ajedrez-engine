@@ -95,5 +95,16 @@ int main()
 	std::cout << "\n¿Rey blanco en jaque? " << (isKingInCheck(board, true) ? "Si" : "No") << "\n";
 	std::cout << "¿Rey negro en jaque? " << (isKingInCheck(board, false) ? "Si" : "No") << "\n";
 
+	Move testMove;
+	testMove.from = 12;
+	testMove.to = 28;
+	testMove.isCapture = false;
+	testMove.piece = PAWN;
+
+	Board afterMove = makeMove(board, testMove);
+	std::cout << "\nTablero despues de mover peon e2-e4:\n";
+	printBoard(afterMove);
+	std::cout << "¿Turno de blancas ahora? " << (afterMove.whiteToMove ? "Si" : "No") << "\n";
+
 	return 0;
 }

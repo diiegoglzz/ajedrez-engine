@@ -106,5 +106,8 @@ int main()
 	printBoard(afterMove);
 	std::cout << "¿Turno de blancas ahora? " << (afterMove.whiteToMove ? "Si" : "No") << "\n";
 
+	std::vector<Move> legalMoves = generateLegalMoves(board);
+	std::cout << "\nTotal de movimientos LEGALES (tablero inicial, turno blancas): " << legalMoves.size() << "\n";
+
 	return 0;
 }

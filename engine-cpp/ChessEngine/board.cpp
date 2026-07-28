@@ -537,3 +537,17 @@ Board makeMove(const Board& board, const Move& m) {
 
     return newBoard;
 }
+
+std::vector<Move> generateLegalMoves(const Board& board) {
+    std::vector<Move> pseudoLegal = generateAllMoves(board);
+    std::vector<Move> legal;
+
+    for (const Move& m : pseudoLegal) {
+        Board afterMove = makeMove(board, m);
+        if (!isKingInCheck(afterMove,!afterMove.whiteToMove)) {
+            legal.push_back(m);
+        }
+    }
+
+    return legal;
+}

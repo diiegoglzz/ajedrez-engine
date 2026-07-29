@@ -637,3 +637,33 @@ int minimax(const Board& board, int depth) {
         return best;
     }
 }
+
+Move findBestMove(const Board& board, int depth) {
+    std::vector<Move> legalMoves = generateLegalMoves(board);
+    Move bestMove = legalMoves[0]; // por defecto, la primera, luego se sustituye
+
+    if (board.whiteToMove) {
+        int best = INT_MIN;
+        for (const Move& m : legalMoves) {
+            Board afterMove = makeMove(board, m);
+            int eval = minimax(afterMove, depth - 1);
+            if (eval > best) {
+                best = eval;
+                bestMove = m;
+            }
+        }
+    }
+    else {
+        int best = INT_MAX;
+        for (const Move& m : legalMoves) {
+            Board afterMove = makeMove(board, m);
+            int eval = minimax(afterMove, depth - 1);
+            if (eval < best) {
+                best = eval;
+                bestMove = m;
+            }
+        }
+    }
+
+    return bestMove;
+}

@@ -117,5 +117,8 @@ int main()
 
 	std::cout << "\nMinimax profundidad 2 (tablero inicial): " << minimax(board, 2) << "\n";
 
+	Move best = findBestMove(board, 3);
+	std::cout << "\nMejor jugada encontrada (profundidad 3): de " << best.from << " a " << best.to << "\n";
+
 	return 0;
 }

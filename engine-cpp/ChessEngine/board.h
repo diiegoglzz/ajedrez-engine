@@ -68,3 +68,5 @@ int countBits(uint64_t bitboard);
 int evaluateBoard(const Board& board);
 
 int minimax(const Board& board, int depth);
+
+Move findBestMove(const Board& board, int depth);

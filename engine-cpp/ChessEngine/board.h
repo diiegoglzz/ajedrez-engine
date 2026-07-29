@@ -62,3 +62,6 @@ Board makeMove(const Board& board, const Move& m);
 std::vector<Move> generateLegalMoves(const Board& board);
 
 uint64_t perft(const Board& board, int depth);
+
+int countBits(uint64_t bitboard);
+int evaluateBoard(const Board& board);

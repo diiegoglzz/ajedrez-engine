@@ -113,5 +113,7 @@ int main()
 	std::cout << "Perft(2): " << perft(board, 2) << "\n";
 	std::cout << "Perft(3): " << perft(board, 3) << "\n";
 
+	std::cout << "\nEvaluacion del tablero inicial: " << evaluateBoard(board) << "\n";
+
 	return 0;
 }

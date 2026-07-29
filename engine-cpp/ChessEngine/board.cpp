@@ -577,3 +577,30 @@ uint64_t perft(const Board& board, int depth) {
 
     return count;
 }
+
+int countBits(uint64_t bitBoard) {
+    int count = 0;
+
+    while (bitBoard) {
+        count++;
+        bitBoard &= (bitBoard - 1);
+    }
+
+    return count;
+}
+
+int evaluateBoard(const Board& board) {
+    int whiteMaterial = countBits(board.whitePawns) * 1
+        + countBits(board.whiteKnights) * 3
+        + countBits(board.whiteBishops) * 3
+        + countBits(board.whiteRooks) * 5
+        + countBits(board.whiteQueens) * 9;
+
+    int blackMaterial = countBits(board.blackPawns) * 1
+        + countBits(board.blackKnights) * 3
+        + countBits(board.blackBishops) * 3
+        + countBits(board.blackRooks) * 5
+        + countBits(board.blackQueens) * 9;
+
+    return whiteMaterial - blackMaterial;
+}

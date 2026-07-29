@@ -1,6 +1,7 @@
 #pragma once
 #include <cstdint>
 #include <vector>
+#include <climits>
 
 // Máscaras que representan "todas las columnas menos esta"
 const uint64_t NOT_A_FILE = 0xFEFEFEFEFEFEFEFEULL;
@@ -65,3 +66,5 @@ uint64_t perft(const Board& board, int depth);
 
 int countBits(uint64_t bitboard);
 int evaluateBoard(const Board& board);
+
+int minimax(const Board& board, int depth);

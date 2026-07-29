@@ -604,3 +604,36 @@ int evaluateBoard(const Board& board) {
 
     return whiteMaterial - blackMaterial;
 }
+
+int minimax(const Board& board, int depth) {
+    if (depth == 0) {
+        return evaluateBoard(board);
+    }
+
+    std::vector<Move> legalMoves = generateLegalMoves(board);
+
+    if (board.whiteToMove) {
+        // Blancas MAXIMIZA: busca la jugada con mayor evaluación posible
+        int best = INT_MIN;
+        for (const Move& m : legalMoves) {
+            Board afterMove = makeMove(board, m);
+            int eval = minimax(afterMove, depth - 1);
+            if (eval > best) {
+                best = eval;
+            }
+        }
+        return best;
+    }
+    else {
+        // Negras MINIMIZA: busca la jugada con menor evaluación posible
+        int best = INT_MAX;
+        for (const Move& m : legalMoves) {
+            Board afterMove = makeMove(board, m);
+            int eval = minimax(afterMove, depth - 1);
+            if (eval < best) {
+                best = eval;
+            }
+        }
+        return best;
+    }
+}

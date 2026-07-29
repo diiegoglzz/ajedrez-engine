@@ -115,5 +115,7 @@ int main()
 
 	std::cout << "\nEvaluacion del tablero inicial: " << evaluateBoard(board) << "\n";
 
+	std::cout << "\nMinimax profundidad 2 (tablero inicial): " << minimax(board, 2) << "\n";
+
 	return 0;
 }

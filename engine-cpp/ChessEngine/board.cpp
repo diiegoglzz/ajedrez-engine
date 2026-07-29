@@ -667,3 +667,47 @@ Move findBestMove(const Board& board, int depth) {
 
     return bestMove;
 }
+
+int alphaBeta(const Board& board, int depth, int alpha, int beta) {
+    if (depth == 0) {
+        return evaluateBoard(board);
+    }
+
+    std::vector<Move> legalMoves = generateLegalMoves(board);
+
+    if (board.whiteToMove) {
+        int best = INT_MIN;
+        for (const Move& m : legalMoves) {
+            Board afterMove = makeMove(board, m);
+            int eval = alphaBeta(afterMove, depth - 1, alpha, beta);
+            if (eval > best) {
+                best = eval;
+            }
+            if (best > alpha) {
+                alpha = best; // actualizamos "lo mejor que blancas tiene garantizado"
+            }
+            if (alpha >= beta) {
+                break; // esta rama ya no puede mejorar el resultado, cortamos
+            }
+        }
+        return best;
+    }
+
+    else {
+        int best = INT_MAX;
+        for (const Move& m : legalMoves) {
+            Board afterMove = makeMove(board, m);
+            int eval = alphaBeta(afterMove, depth - 1, alpha, beta);
+            if (eval < best) {
+                best = eval;
+            }
+            if (best < beta) {
+                beta = best;
+            }
+            if (alpha >= beta) {
+                break;
+            }
+        }
+        return best;
+    }
+}

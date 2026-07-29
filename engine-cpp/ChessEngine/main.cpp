@@ -117,11 +117,11 @@ int main()
 
 	std::cout << "\nMinimax profundidad 2 (tablero inicial): " << minimax(board, 2) << "\n";
 
-	Move best = findBestMove(board, 3);
-	std::cout << "\nMejor jugada encontrada (profundidad 3): de " << best.from << " a " << best.to << "\n";
-
 	std::cout << "\nMinimax profundidad 3: " << minimax(board, 3) << "\n";
 	std::cout << "AlphaBeta profundidad 3: " << alphaBeta(board, 3, INT_MIN, INT_MAX) << "\n";
+
+	Move bestAB = findBestMove(board, 4);
+	std::cout << "\nMejor jugada (alpha-beta, profundidad 4): de " << bestAB.from << " a " << bestAB.to << "\n";
 
 	return 0;
 }

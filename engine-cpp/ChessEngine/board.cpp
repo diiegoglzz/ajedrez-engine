@@ -646,7 +646,7 @@ Move findBestMove(const Board& board, int depth) {
         int best = INT_MIN;
         for (const Move& m : legalMoves) {
             Board afterMove = makeMove(board, m);
-            int eval = minimax(afterMove, depth - 1);
+            int eval = alphaBeta(afterMove, depth - 1, INT_MIN, INT_MAX);
             if (eval > best) {
                 best = eval;
                 bestMove = m;
@@ -657,7 +657,7 @@ Move findBestMove(const Board& board, int depth) {
         int best = INT_MAX;
         for (const Move& m : legalMoves) {
             Board afterMove = makeMove(board, m);
-            int eval = minimax(afterMove, depth - 1);
+            int eval = alphaBeta(afterMove, depth - 1, INT_MIN, INT_MAX);
             if (eval < best) {
                 best = eval;
                 bestMove = m;

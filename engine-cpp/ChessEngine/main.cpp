@@ -156,5 +156,45 @@ int main()
 		printBoard(afterCastle);
 	}
 
+	// Posición: peón blanco en e5, peón negro avanza d7-d5 (doble), habilitando captura al paso
+	Board epTest;
+	initBoard(epTest);
+
+	// Movemos manualmente el peon blanco de e2 a e5 (simulando que ya avanzo antes)
+	epTest.whitePawns &= ~(1ULL << 12); // quita de e2
+	epTest.whitePawns |= (1ULL << 36);  // pon en e5
+	epTest.whiteToMove = false; // le toca a negras
+
+	std::cout << "\nPosicion antes del avance doble negro:\n";
+	printBoard(epTest);
+
+	// Negras avanzan d7-d5 (doble), esto debe habilitar captura al paso
+	Move blackDouble;
+	blackDouble.from = 51; // d7
+	blackDouble.to = 35;   // d5
+	blackDouble.isCapture = false;
+	blackDouble.piece = PAWN;
+	blackDouble.isEnPassant = false;
+
+	Board afterBlackDouble = makeMove(epTest, blackDouble);
+	std::cout << "\nenPassantSquare tras d7-d5: " << afterBlackDouble.enPassantSquare << " (deberia ser 43, d6)\n";
+
+	std::vector<Move> epMoves = generateLegalMoves(afterBlackDouble);
+	bool foundEP = false;
+	for (const Move& m : epMoves) {
+		if (m.isEnPassant) foundEP = true;
+	}
+	std::cout << "¿Se genero la captura al paso? " << (foundEP ? "Si" : "No") << "\n";
+
+	if (foundEP) {
+		for (const Move& m : epMoves) {
+			if (m.isEnPassant) {
+				Board afterEP = makeMove(afterBlackDouble, m);
+				std::cout << "\nTablero tras la captura al paso:\n";
+				printBoard(afterEP);
+			}
+		}
+	}
+
 	return 0;
 }

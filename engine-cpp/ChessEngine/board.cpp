@@ -24,6 +24,8 @@ void initBoard(Board& board) {
     board.blackRooks = (1ULL << 56) | (1ULL << 63);
     board.blackQueens = (1ULL << 59);
     board.blackKing = (1ULL << 60);
+
+    board.enPassantSquare = -1;
 }
 
 bool getBit(uint64_t bitboard, int square) {
@@ -264,6 +266,7 @@ void generateKnightMoves(const Board& board, std::vector<Move>& moves) {
             m.to = toSquare;
             m.isCapture = getBit(enemyPieces, toSquare);
             m.piece = KNIGHT;
+            m.isEnPassant = false;
             moves.push_back(m);
 
             attacks &= (attacks - 1);
@@ -293,6 +296,7 @@ void generateKingMoves(const Board& board, std::vector<Move>& moves) {
             m.to = toSquare;
             m.isCapture = getBit(enemyPieces, toSquare);
             m.piece = KING;
+            m.isEnPassant = false;
             moves.push_back(m);
 
             attacks &= (attacks - 1);
@@ -323,6 +327,7 @@ void generateRookMoves(const Board& board, std::vector<Move>& moves) {
             m.to = toSquare;
             m.isCapture = getBit(enemyPieces, toSquare);
             m.piece = ROOK;
+            m.isEnPassant = false;
             moves.push_back(m);
 
             attacks &= (attacks - 1);
@@ -353,6 +358,7 @@ void generateBishopMoves(const Board& board, std::vector<Move>& moves) {
             m.to = toSquare;
             m.isCapture = getBit(enemyPieces, toSquare);
             m.piece = BISHOP;
+            m.isEnPassant = false;
             moves.push_back(m);
 
             attacks &= (attacks - 1);
@@ -383,6 +389,7 @@ void generateQueenMoves(const Board& board, std::vector<Move>& moves) {
             m.to = toSquare;
             m.isCapture = getBit(enemyPieces, toSquare);
             m.piece = QUEEN;
+            m.isEnPassant = false;
             moves.push_back(m);
 
             attacks &= (attacks - 1);
@@ -411,6 +418,7 @@ void generatePawnMoves(const Board& board, std::vector<Move>& moves) {
             m.to = toSquare;
             m.isCapture = false; // un avance nunca es captura
             m.piece = PAWN;
+            m.isEnPassant = false;
             moves.push_back(m);
             advances &= (advances - 1);
         }
@@ -425,8 +433,25 @@ void generatePawnMoves(const Board& board, std::vector<Move>& moves) {
             m.to = toSquare;
             m.isCapture = true; // aquí ya sabemos que siempre es captura
             m.piece = PAWN;
+            m.isEnPassant = false;
             moves.push_back(m);
             captures &= (captures - 1);
+        }
+
+        // Captura al paso
+        if (board.enPassantSquare != -1) {
+            uint64_t epTarget = 1ULL << board.enPassantSquare;
+            uint64_t epAttack = pawnAttacks(fromSquare, board.whiteToMove) & epTarget;
+
+            if (epAttack) {
+                Move m;
+                m.from = fromSquare;
+                m.to = board.enPassantSquare;
+                m.isCapture = true;
+                m.piece = PAWN;
+                m.isEnPassant = true;
+                moves.push_back(m);
+            }
         }
 
         pawns &= (pawns - 1);
@@ -484,6 +509,7 @@ bool isKingInCheck(const Board& board, bool whiteKing) {
 
 Board makeMove(const Board& board, const Move& m) {
     Board newBoard = board;
+    newBoard.enPassantSquare = -1;
 
     uint64_t fromBit = 1ULL << m.from;
     uint64_t toBit = 1ULL << m.to;
@@ -493,6 +519,10 @@ Board makeMove(const Board& board, const Move& m) {
     case PAWN:
         if (newBoard.whiteToMove) { newBoard.whitePawns &= ~fromBit; newBoard.whitePawns |= toBit; }
         else { newBoard.blackPawns &= ~fromBit; newBoard.blackPawns |= toBit; }
+
+        if (m.to - m.from == 16 || m.to - m.from == -16) {
+            newBoard.enPassantSquare = (m.from + m.to) / 2;
+        }
         break;
     case KNIGHT:
         if (newBoard.whiteToMove) { newBoard.whiteKnights &= ~fromBit; newBoard.whiteKnights |= toBit; }
@@ -576,6 +606,18 @@ Board makeMove(const Board& board, const Move& m) {
 
             if (m.to == 0) { newBoard.whiteCanCastleQueenside = false; }
             if (m.to == 7) { newBoard.whiteCanCastleKingside = false; }
+        }
+    }
+
+    if (m.isEnPassant) {
+        int capturedPawnSquare = newBoard.whiteToMove ? m.to - 8 : m.to + 8;
+        uint64_t capturedBit = 1ULL << capturedPawnSquare;
+
+        if (newBoard.whiteToMove) {
+            newBoard.blackPawns &= ~capturedBit;
+        }
+        else {
+            newBoard.whitePawns &= ~capturedBit;
         }
     }
 
@@ -775,6 +817,7 @@ void generateCastlingMoves(const Board& board, std::vector<Move>& moves) {
                 m.to = 6;
                 m.isCapture = false;
                 m.piece = KING;
+                m.isEnPassant = false;
                 moves.push_back(m);
             }
         }
@@ -791,6 +834,7 @@ void generateCastlingMoves(const Board& board, std::vector<Move>& moves) {
                 m.to = 2;
                 m.isCapture = false;
                 m.piece = KING;
+                m.isEnPassant = false;
                 moves.push_back(m);
             }
         }
@@ -808,6 +852,7 @@ void generateCastlingMoves(const Board& board, std::vector<Move>& moves) {
                 m.to = 62;
                 m.isCapture = false;
                 m.piece = KING;
+                m.isEnPassant = false;
                 moves.push_back(m);
             }
         }
@@ -823,6 +868,7 @@ void generateCastlingMoves(const Board& board, std::vector<Move>& moves) {
                 m.to = 58;
                 m.isCapture = false;
                 m.piece = KING;
+                m.isEnPassant = false;
                 moves.push_back(m);
             }
         }

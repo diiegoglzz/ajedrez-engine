@@ -17,6 +17,7 @@ struct Board {
     bool whiteCanCastleQueenside;
     bool blackCanCastleKingside;
     bool blackCanCastleQueenside;
+    int enPassantSquare;
 };
 
 enum PieceType {
@@ -29,6 +30,7 @@ struct Move {
     int to;
     bool isCapture;
     PieceType piece;
+    bool isEnPassant;
 };
 
 // Índices de casillas: a1 = 0, b1 = 1, ..., h1 = 7, a2 = 8, ..., h8 = 63

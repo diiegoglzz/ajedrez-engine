@@ -11,7 +11,7 @@ Motor de ajedrez multi-lenguaje, en desarrollo.
 - ✅ Representación del tablero con bitboards
 - ✅ Función de impresión del tablero
 - ✅ Generación de movimientos
-- 🔲 Búsqueda (minimax + alpha-beta)
+- ✅ Búsqueda (minimax + alpha-beta)
 - 🔲 Protocolo UCI
 - 🔲 GUI en Java
 - 🔲 Análisis de partidas en Python

@@ -561,6 +561,10 @@ Board makeMove(const Board& board, const Move& m) {
             newBoard.blackRooks &= ~toBit;
             newBoard.blackQueens &= ~toBit;
             newBoard.blackKing &= ~toBit;
+
+            // NUEVO: si capturaste la torre negra en su casilla original, pierde el enroque de ese lado
+            if (m.to == 56) { newBoard.blackCanCastleQueenside = false; }
+            if (m.to == 63) { newBoard.blackCanCastleKingside = false; }
         }
         else {
             newBoard.whitePawns &= ~toBit;
@@ -569,6 +573,9 @@ Board makeMove(const Board& board, const Move& m) {
             newBoard.whiteRooks &= ~toBit;
             newBoard.whiteQueens &= ~toBit;
             newBoard.whiteKing &= ~toBit;
+
+            if (m.to == 0) { newBoard.whiteCanCastleQueenside = false; }
+            if (m.to == 7) { newBoard.whiteCanCastleKingside = false; }
         }
     }
 

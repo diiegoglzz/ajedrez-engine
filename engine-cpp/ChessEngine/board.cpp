@@ -517,10 +517,37 @@ Board makeMove(const Board& board, const Move& m) {
         else { newBoard.blackQueens &= ~fromBit; newBoard.blackQueens |= toBit; }
         break;
     case KING:
-        if (newBoard.whiteToMove) { newBoard.whiteKing &= ~fromBit; newBoard.whiteKing |= toBit; 
-        newBoard.whiteCanCastleKingside = false; newBoard.whiteCanCastleQueenside = false; }
-        else { newBoard.blackKing &= ~fromBit; newBoard.blackKing |= toBit; 
-        newBoard.blackCanCastleKingside = false; newBoard.blackCanCastleQueenside = false; }
+        if (newBoard.whiteToMove) { 
+            newBoard.whiteKing &= ~fromBit; newBoard.whiteKing |= toBit; 
+            newBoard.whiteCanCastleKingside = false; newBoard.whiteCanCastleQueenside = false; 
+        
+            // Enroque corto
+            if (m.from == 4 && m.to == 6){
+                newBoard.whiteRooks &= ~(1ULL << 7);  // quita torre de h1
+                newBoard.whiteRooks |= (1ULL << 5);   // pone la torre en f1
+            }
+            // Enroque largo
+            if (m.from == 4 && m.to == 2) {
+                newBoard.whiteRooks &= ~(1ULL << 0);  // quita torre de a1
+                newBoard.whiteRooks |= (1ULL << 3);   // pone la torre en d1
+            }
+        
+        }
+        else { 
+            newBoard.blackKing &= ~fromBit; newBoard.blackKing |= toBit; 
+            newBoard.blackCanCastleKingside = false; newBoard.blackCanCastleQueenside = false;
+
+            // Enroque corto
+            if (m.from == 60 && m.to == 62) {
+                newBoard.blackRooks &= ~(1ULL << 63);
+                newBoard.blackRooks |= (1ULL << 61);
+            }
+            // Enroque largo
+            if (m.from == 60 && m.to == 58) {
+                newBoard.blackRooks &= ~(1ULL << 56);
+                newBoard.blackRooks |= (1ULL << 59);
+            }
+        }
         break;
     }
 

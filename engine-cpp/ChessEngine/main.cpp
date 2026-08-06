@@ -123,5 +123,38 @@ int main()
 	Move bestAB = findBestMove(board, 4);
 	std::cout << "\nMejor jugada (alpha-beta, profundidad 4): de " << bestAB.from << " a " << bestAB.to << "\n";
 
+	Board testBoard;
+	initBoard(testBoard);
+
+	// Vaciamos manualmente f1 y g1 (alfil y caballo blancos) para permitir enroque corto
+	testBoard.whiteBishops &= ~(1ULL << 5);
+	testBoard.whiteKnights &= ~(1ULL << 6);
+
+	std::cout << "\nTablero con f1/g1 vacias:\n";
+	printBoard(testBoard);
+
+	std::vector<Move> legalMoves2 = generateLegalMoves(testBoard);
+	std::cout << "\nMovimientos legales encontrados: " << legalMoves2.size() << "\n";
+
+	bool foundCastling = false;
+	for (const Move& m : legalMoves2) {
+		if (m.from == 4 && m.to == 6) {
+			foundCastling = true;
+		}
+	}
+	std::cout << "¿Se genero el enroque corto blanco? " << (foundCastling ? "Si" : "No") << "\n";
+
+	if (foundCastling) {
+		Move castleMove;
+		castleMove.from = 4;
+		castleMove.to = 6;
+		castleMove.isCapture = false;
+		castleMove.piece = KING;
+
+		Board afterCastle = makeMove(testBoard, castleMove);
+		std::cout << "\nTablero despues del enroque:\n";
+		printBoard(afterCastle);
+	}
+
 	return 0;
 }

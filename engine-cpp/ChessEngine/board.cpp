@@ -12,6 +12,10 @@ void initBoard(Board& board) {
     board.whiteKing = (1ULL << 4);
 
     board.whiteToMove = true;
+    board.whiteCanCastleKingside = true;
+    board.whiteCanCastleQueenside = true;
+    board.blackCanCastleKingside = true;
+    board.blackCanCastleQueenside = true;
 
     board.blackPawns = (1ULL << 48) | (1ULL << 49) | (1ULL << 50) | (1ULL << 51) |
         (1ULL << 52) | (1ULL << 53) | (1ULL << 54) | (1ULL << 55);
@@ -438,6 +442,7 @@ std::vector<Move> generateAllMoves(const Board& board) {
     generateBishopMoves(board, moves);
     generateQueenMoves(board, moves);
     generatePawnMoves(board, moves);
+    generateCastlingMoves(board, moves);
 
     return moves;
 }
@@ -498,16 +503,24 @@ Board makeMove(const Board& board, const Move& m) {
         else { newBoard.blackBishops &= ~fromBit; newBoard.blackBishops |= toBit; }
         break;
     case ROOK:
-        if (newBoard.whiteToMove) { newBoard.whiteRooks &= ~fromBit; newBoard.whiteRooks |= toBit; }
-        else { newBoard.blackRooks &= ~fromBit; newBoard.blackRooks |= toBit; }
+        if (newBoard.whiteToMove) { newBoard.whiteRooks &= ~fromBit; newBoard.whiteRooks |= toBit; 
+        if (m.from == 0) { newBoard.whiteCanCastleQueenside = false; } 
+        if (m.from == 7) { newBoard.whiteCanCastleKingside = false; } 
+        }
+        else { newBoard.blackRooks &= ~fromBit; newBoard.blackRooks |= toBit; 
+        if (m.from == 56) { newBoard.blackCanCastleQueenside = false; } 
+        if (m.from == 63) { newBoard.blackCanCastleKingside = false; }
+        }
         break;
     case QUEEN:
         if (newBoard.whiteToMove) { newBoard.whiteQueens &= ~fromBit; newBoard.whiteQueens |= toBit; }
         else { newBoard.blackQueens &= ~fromBit; newBoard.blackQueens |= toBit; }
         break;
     case KING:
-        if (newBoard.whiteToMove) { newBoard.whiteKing &= ~fromBit; newBoard.whiteKing |= toBit; }
-        else { newBoard.blackKing &= ~fromBit; newBoard.blackKing |= toBit; }
+        if (newBoard.whiteToMove) { newBoard.whiteKing &= ~fromBit; newBoard.whiteKing |= toBit; 
+        newBoard.whiteCanCastleKingside = false; newBoard.whiteCanCastleQueenside = false; }
+        else { newBoard.blackKing &= ~fromBit; newBoard.blackKing |= toBit; 
+        newBoard.blackCanCastleKingside = false; newBoard.blackCanCastleQueenside = false; }
         break;
     }
 
@@ -709,5 +722,75 @@ int alphaBeta(const Board& board, int depth, int alpha, int beta) {
             }
         }
         return best;
+    }
+}
+
+void generateCastlingMoves(const Board& board, std::vector<Move>& moves) {
+    uint64_t occupied = getAllPieces(board);
+
+    if (board.whiteToMove) {
+        // Enroque corto blanco
+        if (board.whiteCanCastleKingside) {
+            bool squaresEmpty = !getBit(occupied, 5) && !getBit(occupied, 6);
+            bool notInCheck = !isKingInCheck(board, true);
+            bool pathSafe = !isSquareAttacked(board, 5, false) && !isSquareAttacked(board, 6, false);
+
+            if (squaresEmpty && notInCheck && pathSafe) {
+                Move m;
+                m.from = 4;
+                m.to = 6;
+                m.isCapture = false;
+                m.piece = KING;
+                moves.push_back(m);
+            }
+        }
+
+        // Enroque largo blanco
+        if (board.whiteCanCastleQueenside) {
+            bool squaresEmpty = !getBit(occupied, 1) && !getBit(occupied, 2) && !getBit(occupied, 3);
+            bool notInCheck = !isKingInCheck(board, true);
+            bool pathSafe = !isSquareAttacked(board, 2, false) && !isSquareAttacked(board, 3, false);
+
+            if (squaresEmpty && notInCheck && pathSafe) {
+                Move m;
+                m.from = 4;
+                m.to = 2;
+                m.isCapture = false;
+                m.piece = KING;
+                moves.push_back(m);
+            }
+        }
+    }
+    // Turno de negras 
+    else {
+        if (board.blackCanCastleKingside) {
+            bool squaresEmpty = !getBit(occupied, 61) && !getBit(occupied, 62);
+            bool notInCheck = !isKingInCheck(board, false);
+            bool pathSafe = !isSquareAttacked(board, 61, true) && !isSquareAttacked(board, 62, true);
+
+            if (squaresEmpty && notInCheck && pathSafe) {
+                Move m;
+                m.from = 60;
+                m.to = 62;
+                m.isCapture = false;
+                m.piece = KING;
+                moves.push_back(m);
+            }
+        }
+
+        if (board.blackCanCastleQueenside) {
+            bool squaresEmpty = !getBit(occupied, 57) && !getBit(occupied, 58) && !getBit(occupied, 59);
+            bool notInCheck = !isKingInCheck(board, false);
+            bool pathSafe = !isSquareAttacked(board, 58, true) && !isSquareAttacked(board, 59, true);
+
+            if (squaresEmpty && notInCheck && pathSafe) {
+                Move m;
+                m.from = 60;
+                m.to = 58;
+                m.isCapture = false;
+                m.piece = KING;
+                moves.push_back(m);
+            }
+        }
     }
 }

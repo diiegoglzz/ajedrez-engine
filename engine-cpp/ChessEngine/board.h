@@ -13,6 +13,10 @@ struct Board {
     uint64_t whitePawns, whiteKnights, whiteBishops, whiteRooks, whiteQueens, whiteKing;
     uint64_t blackPawns, blackKnights, blackBishops, blackRooks, blackQueens, blackKing;
     bool whiteToMove;
+    bool whiteCanCastleKingside;
+    bool whiteCanCastleQueenside;
+    bool blackCanCastleKingside;
+    bool blackCanCastleQueenside;
 };
 
 enum PieceType {
@@ -72,3 +76,5 @@ int minimax(const Board& board, int depth);
 Move findBestMove(const Board& board, int depth);
 
 int alphaBeta(const Board& board, int depth, int alpha, int beta);
+
+void generateCastlingMoves(const Board& board, std::vector<Move>& moves);

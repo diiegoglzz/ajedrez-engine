@@ -236,5 +236,10 @@ int main()
 		printBoard(afterPromo);
 	}
 
+	Board freshBoard;
+	initBoard(freshBoard);
+
+	std::cout << "\nPerft(4): " << perft(freshBoard, 4) << " (esperado: 197281)\n";
+
 	return 0;
 }

@@ -21,7 +21,7 @@ struct Board {
 };
 
 enum PieceType {
-    PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING
+    PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING, NONE
 };
 
 
@@ -31,6 +31,7 @@ struct Move {
     bool isCapture;
     PieceType piece;
     bool isEnPassant;
+    PieceType promotion;
 };
 
 // Índices de casillas: a1 = 0, b1 = 1, ..., h1 = 7, a2 = 8, ..., h8 = 63
@@ -80,3 +81,5 @@ Move findBestMove(const Board& board, int depth);
 int alphaBeta(const Board& board, int depth, int alpha, int beta);
 
 void generateCastlingMoves(const Board& board, std::vector<Move>& moves);
+
+bool isPromotionSquare(int square, bool isWhite);

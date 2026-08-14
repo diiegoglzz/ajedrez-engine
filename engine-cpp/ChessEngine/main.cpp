@@ -196,5 +196,45 @@ int main()
 		}
 	}
 
+	Board promoTest;
+	initBoard(promoTest);
+
+	// Vaciamos el tablero casi entero y colocamos solo un peon blanco en a7, listo para promocionar
+	promoTest.whitePawns = (1ULL << 48); // peon blanco en a7
+	promoTest.blackPawns = 0ULL;
+	promoTest.whiteKnights = 0ULL; promoTest.blackKnights = 0ULL;
+	promoTest.whiteBishops = 0ULL; promoTest.blackBishops = 0ULL;
+	promoTest.whiteRooks = 0ULL; promoTest.blackRooks = 0ULL;
+	promoTest.whiteQueens = 0ULL; promoTest.blackQueens = 0ULL;
+	promoTest.whiteKing = (1ULL << 4);   // rey blanco en e1
+	promoTest.blackKing = (1ULL << 60);  // rey negro en e8
+	promoTest.whiteToMove = true;
+	promoTest.enPassantSquare = -1;
+	promoTest.whiteCanCastleKingside = false;
+	promoTest.whiteCanCastleQueenside = false;
+	promoTest.blackCanCastleKingside = false;
+	promoTest.blackCanCastleQueenside = false;
+
+	std::cout << "\nPosicion antes de promocionar:\n";
+	printBoard(promoTest);
+
+	std::vector<Move> promoMoves = generateLegalMoves(promoTest);
+	Move promoMove;
+	bool found = false;
+	for (const Move& m : promoMoves) {
+		if (m.promotion == QUEEN) {
+			promoMove = m;
+			found = true;
+		}
+	}
+
+	std::cout << "¿Se genero movimiento de promocion? " << (found ? "Si" : "No") << "\n";
+
+	if (found) {
+		Board afterPromo = makeMove(promoTest, promoMove);
+		std::cout << "\nTablero despues de la promocion:\n";
+		printBoard(afterPromo);
+	}
+
 	return 0;
 }

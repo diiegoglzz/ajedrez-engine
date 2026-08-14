@@ -267,6 +267,7 @@ void generateKnightMoves(const Board& board, std::vector<Move>& moves) {
             m.isCapture = getBit(enemyPieces, toSquare);
             m.piece = KNIGHT;
             m.isEnPassant = false;
+            m.promotion = NONE;
             moves.push_back(m);
 
             attacks &= (attacks - 1);
@@ -297,6 +298,7 @@ void generateKingMoves(const Board& board, std::vector<Move>& moves) {
             m.isCapture = getBit(enemyPieces, toSquare);
             m.piece = KING;
             m.isEnPassant = false;
+            m.promotion = NONE;
             moves.push_back(m);
 
             attacks &= (attacks - 1);
@@ -328,6 +330,7 @@ void generateRookMoves(const Board& board, std::vector<Move>& moves) {
             m.isCapture = getBit(enemyPieces, toSquare);
             m.piece = ROOK;
             m.isEnPassant = false;
+            m.promotion = NONE;
             moves.push_back(m);
 
             attacks &= (attacks - 1);
@@ -359,6 +362,7 @@ void generateBishopMoves(const Board& board, std::vector<Move>& moves) {
             m.isCapture = getBit(enemyPieces, toSquare);
             m.piece = BISHOP;
             m.isEnPassant = false;
+            m.promotion = NONE;
             moves.push_back(m);
 
             attacks &= (attacks - 1);
@@ -390,6 +394,7 @@ void generateQueenMoves(const Board& board, std::vector<Move>& moves) {
             m.isCapture = getBit(enemyPieces, toSquare);
             m.piece = QUEEN;
             m.isEnPassant = false;
+            m.promotion = NONE;
             moves.push_back(m);
 
             attacks &= (attacks - 1);
@@ -419,6 +424,7 @@ void generatePawnMoves(const Board& board, std::vector<Move>& moves) {
             m.isCapture = false; // un avance nunca es captura
             m.piece = PAWN;
             m.isEnPassant = false;
+            m.promotion = isPromotionSquare(toSquare, board.whiteToMove) ? QUEEN : NONE;
             moves.push_back(m);
             advances &= (advances - 1);
         }
@@ -434,6 +440,7 @@ void generatePawnMoves(const Board& board, std::vector<Move>& moves) {
             m.isCapture = true; // aquí ya sabemos que siempre es captura
             m.piece = PAWN;
             m.isEnPassant = false;
+            m.promotion = isPromotionSquare(toSquare, board.whiteToMove) ? QUEEN : NONE;
             moves.push_back(m);
             captures &= (captures - 1);
         }
@@ -450,6 +457,7 @@ void generatePawnMoves(const Board& board, std::vector<Move>& moves) {
                 m.isCapture = true;
                 m.piece = PAWN;
                 m.isEnPassant = true;
+                m.promotion = NONE;
                 moves.push_back(m);
             }
         }
@@ -522,6 +530,17 @@ Board makeMove(const Board& board, const Move& m) {
 
         if (m.to - m.from == 16 || m.to - m.from == -16) {
             newBoard.enPassantSquare = (m.from + m.to) / 2;
+        }
+
+        if (m.promotion != NONE) {
+            if (newBoard.whiteToMove) {
+                newBoard.whitePawns &= ~toBit;
+                newBoard.whiteQueens |= toBit;
+            }
+            else {
+                newBoard.blackPawns &= ~toBit;
+                newBoard.blackQueens |= toBit;
+            }
         }
         break;
     case KNIGHT:
@@ -872,5 +891,14 @@ void generateCastlingMoves(const Board& board, std::vector<Move>& moves) {
                 moves.push_back(m);
             }
         }
+    }
+}
+
+bool isPromotionSquare(int square, bool isWhite) {
+    if (isWhite) {
+        return square >= 56 && square <= 63;
+    }
+    else {
+        return square >= 0 && square <= 7;
     }
 }

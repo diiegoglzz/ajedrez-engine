@@ -1,5 +1,6 @@
 #include "board.h"
 #include <iostream>
+#include <string>
 
 void initBoard(Board& board) {
     // Piezas blancas
@@ -900,5 +901,25 @@ bool isPromotionSquare(int square, bool isWhite) {
     }
     else {
         return square >= 0 && square <= 7;
+    }
+}
+
+void runUCI() {
+    Board board;
+    initBoard(board);
+
+    std::string line;
+    while (std::getline(std::cin, line)) {
+        if (line == "uci") {
+            std::cout << "id name AjedrezEngine" << std::endl;
+            std::cout << "id Author Diego" << std::endl;
+            std::cout << "uciok" << std::endl;
+        }
+        else if (line == "isready") {
+            std::cout << "readyok" << std::endl;
+        }
+        else if (line == "quit") {
+            break;
+        }
     }
 }

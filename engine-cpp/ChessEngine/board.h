@@ -83,3 +83,5 @@ int alphaBeta(const Board& board, int depth, int alpha, int beta);
 void generateCastlingMoves(const Board& board, std::vector<Move>& moves);
 
 bool isPromotionSquare(int square, bool isWhite);
+
+void runUCI();

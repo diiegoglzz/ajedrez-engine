@@ -5,7 +5,8 @@
 
 int main()
 {
-	SetConsoleOutputCP(CP_UTF8);
+	/*
+	* SetConsoleOutputCP(CP_UTF8);
 	
 	Board board;
 	initBoard(board);
@@ -240,6 +241,9 @@ int main()
 	initBoard(freshBoard);
 
 	std::cout << "\nPerft(4): " << perft(freshBoard, 4) << " (esperado: 197281)\n";
+	*/
+	
+	runUCI();
 
 	return 0;
 }
